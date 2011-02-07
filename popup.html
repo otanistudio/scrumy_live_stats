@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="lib/jquery-1.5.min.js"></script>
+<style>
+body {
+    font-family: Helvetica Neue, Arial, Helvetica, sans-serif;
+    width:700px;
+    font-size:80%;
+}
+
+h1 {
+    margin-bottom:0.15em;
+    margin-top:0.1em;
+    text-align:left;
+}
+
+
+table {
+    width:700px;
+    border-spacing:1px;
+}
+
+table thead th{
+    background-color:#D7D7D7;
+}
+
+th {
+    text-align:center;
+    text-transform:uppercase;
+}
+
+td {
+    text-align:right;
+    background-color:#E2E2E2;
+}
+
+th, td {
+    padding:0.25em;
+    
+}
+
+#progress_bar_total {
+    position:relative;
+    min-height:15px;    
+    background-color:#F8C0C9;
+    width:700px;
+    z-index:0;
+    margin-bottom:0.5em;
+}
+
+#progress_bar_done {
+    z-index:1;
+    position:absolute;
+    top:0px;
+    left:0px;
+    background-color:#A0E4A0;
+    min-height:15px;
+    text-align:right;
+    color:#138816;
+    font-style:italic;
+    padding-right:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    border-right:1px solid #1D650C;
+}
+
+#progress_bar_info {
+    display:none;
+    position:absolute;
+    z-index:3;
+    top:0px; left:0px;
+    background-color:#ccc;
+    opacity:0.86;
+    min-height:15px;
+    width:100%;
+    text-align:center;
+    color:black;
+}
+
+</style>
+<script>
+$(document).ready(
+    function() {
+        chrome.tabs.getSelected(
+            null,
+            function(tab) {
+                var port = chrome.tabs.connect(tab.id);
+                port.postMessage({'question':'ping'});
+                port.onMessage.addListener(
+                    function(o) {
+                        var totalTimeUnits = o.done + o.todo + o.verify + o.inProgress;
+                        var percentComplete = Math.round((o.done / totalTimeUnits)*100);
+                        $('#output').html(  
+                            "<div id='progress_bar_total'>" + 
+                                "<div id='progress_bar_done' style='width:" + percentComplete + "%'>" + 
+                                    percentComplete + "% complete" +
+                                "</div>" + 
+                                "<div id='progress_bar_info'>" + o.done + " (complete) / " + totalTimeUnits + " (total)</div>" +
+                            "</div>"  +                                                  
+                            "<table>" +
+                                "<thead>" +
+                                    "<tr><th>todo</th><th>in progress</th><th>verify</th><th>done</th></tr>" +
+                                "</thead>" +
+                                "<tbody>" +
+                                    "<tr>" +
+                                        "<td>" + o.todo + "</td>" +
+                                        "<td>" + o.inProgress + "</td>" +
+                                        "<td>" + o.verify + "</td>" +
+                                        "<td>" + o.done + "</td>" +
+                                    "</tr>" +
+                                "</tbody>" +
+                            "</table>"                       
+                        );
+                        
+                        $('#progress_bar_total').unbind();
+                        
+                        $('#progress_bar_total').hover(
+                            function() {
+                                $('#progress_bar_info').css('display', 'block');
+                            },
+                            function() {
+                                $('#progress_bar_info').css('display', 'none');
+                            }
+                        );
+                    }
+                );
+
+            });        
+    }
+);
+</script>
+</head>
+
+<body>
+<h1>Scrumy Live Stats</h1>
+<div id="output"></div>
+</body>
+</html>

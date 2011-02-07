@@ -1,0 +1,23 @@
+{
+    "name": "Scrumy Live Stats",
+    "version" : "0.0.1",
+    "description" : "Counts time units per Scrumy spec http://scrumy.com/",
+    "minimum_chrome_version" : "5.0.316.0",
+    "background_page": "background.html",
+    "page_action" : {
+        "default_icon" : "img/icon-19.png",
+        "default_title" : "Scrumy Stats",
+        "popup" : "popup.html"
+    },
+    "icons" : {
+        "48" : "img/icon-48.png",
+        "128" : "img/icon-128.png"
+    },
+    "content_scripts" : [
+        {
+            "matches" : ["https://*.scrumy.com/*", "http://*.scrumy.com/*" ],
+            "js" : ["lib/jquery-1.5.min.js", "contentscript.js"]
+        }
+    ],
+    "permissions" : [ "tabs", "http://*.scrumy.com/", "https://*.scrumy.com/"]
+}
