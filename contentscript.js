@@ -4,7 +4,7 @@ var countEm = function(tasks) {
     for (var i = 0; i < tasks.length; i++) {
         var timeExtract = pattern.exec( $(tasks[i]).text() ) || [null, 3];
         if(null !== timeExtract && 'NaN' != timeExtract[1] && timeExtract.length == 2) {
-            timeUnits += parseInt(timeExtract[1]);            
+            timeUnits += parseFloat(timeExtract[1]);            
         }
     }
     return timeUnits;
