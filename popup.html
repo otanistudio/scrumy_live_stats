@@ -90,6 +90,21 @@ $(function() {
                 function(o) {
                     var totalTimeUnits = o.totalDone + o.totalTodo + o.totalVerify + o.totalInProgress;
                     var percentComplete = Math.round((o.totalDone / totalTimeUnits)*100);
+                    
+                    // build out raw string for breakdown by story; screw fancy templates, i say (for now)
+                    var storiesTable = "<table><thead><tr><th>story</th><th>todo</th><th>in progress</th><th>verify</th><th>done</th></tr><tbody>";
+                    for(i = 0; i < o.stories.length; i++) {
+                        var story = o.stories[i];
+                        storiesTable += "<tr>" +
+                                            "<td>" + story.name + "</td>" +
+                                            "<td>" + story.todo + "</td>" +
+                                            "<td>" + story.inProgress + "</td>" +
+                                            "<td>" + story.verify + "</td>" +
+                                            "<td>" + story.done + "</td>" +
+                                        "</tr>";
+                    }
+                    storiesTable += "</tbody></table>";
+                    
                     $('#output').html(  
                         "<div id='progress_bar_total'>" + 
                             "<div id='progress_bar_done' style='width:" + percentComplete + "%'>" + 
@@ -109,7 +124,10 @@ $(function() {
                                     "<td>" + o.totalDone + "</td>" +
                                 "</tr>" +
                             "</tbody>" +
-                        "</table>"                       
+                        "</table>" +
+                        
+                        "<h2>Breakdown by Story</h2>" +
+                        storiesTable                        
                     );
                     
                     $('#progress_bar_total').unbind();
