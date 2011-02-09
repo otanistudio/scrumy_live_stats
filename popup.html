@@ -88,14 +88,14 @@ $(function() {
             port.postMessage({'question':'ping'});
             port.onMessage.addListener(
                 function(o) {
-                    var totalTimeUnits = o.done + o.todo + o.verify + o.inProgress;
-                    var percentComplete = Math.round((o.done / totalTimeUnits)*100);
+                    var totalTimeUnits = o.totalDone + o.totalTodo + o.totalVerify + o.totalInProgress;
+                    var percentComplete = Math.round((o.totalDone / totalTimeUnits)*100);
                     $('#output').html(  
                         "<div id='progress_bar_total'>" + 
                             "<div id='progress_bar_done' style='width:" + percentComplete + "%'>" + 
                                 percentComplete + "% complete" +
                             "</div>" + 
-                            "<div id='progress_bar_info'>" + o.done + " (complete) / " + totalTimeUnits + " (total)</div>" +
+                            "<div id='progress_bar_info'>" + o.totalDone + " (complete) / " + totalTimeUnits + " (total)</div>" +
                         "</div>"  +                                                  
                         "<table>" +
                             "<thead>" +
@@ -103,10 +103,10 @@ $(function() {
                             "</thead>" +
                             "<tbody>" +
                                 "<tr>" +
-                                    "<td>" + o.todo + "</td>" +
-                                    "<td>" + o.inProgress + "</td>" +
-                                    "<td>" + o.verify + "</td>" +
-                                    "<td>" + o.done + "</td>" +
+                                    "<td>" + o.totalTodo + "</td>" +
+                                    "<td>" + o.totalInProgress + "</td>" +
+                                    "<td>" + o.totalVerify + "</td>" +
+                                    "<td>" + o.totalDone + "</td>" +
                                 "</tr>" +
                             "</tbody>" +
                         "</table>"                       

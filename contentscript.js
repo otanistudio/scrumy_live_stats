@@ -15,24 +15,42 @@ chrome.extension.onConnect.addListener(
         port.onMessage.addListener(
             function(msg) {
                 
+                var stories = [];
+                
+                var totalTodo = 0;
+                var totalInProgress = 0;
+                var totalVerify = 0;
+                var totalDone = 0;
+                
                 $('tr.story-task-row').each(
                     function() {
-                        //console.log($(this));
                         var row = $(this);
                         var storyName = $.trim(row.find('td.stories div.story div.story-handle span.title').text());
                         var storyTodoCount = countEm(row.find('td.todo > div.task'));
                         var storyInProgressCount = countEm(row.find('td.inprogress > div.task'));
                         var storyVerifyCount = countEm(row.find('td.verify > div.task'));
                         var storyDoneCount = countEm(row.find('td.done > div.task'));
-                        //console.log('todo per story: ' + storyTodoCount);
+                        stories.push({
+                            'name' : storyName,
+                            'todo' : storyTodoCount,
+                            'inProgress' : storyInProgressCount,
+                            'verify' : storyVerifyCount,
+                            'done' : storyDoneCount
+                        });
+                        
+                        totalTodo += storyTodoCount;
+                        totalInProgress += storyInProgressCount;
+                        totalVerify += storyVerifyCount;
+                        totalDone += storyDoneCount;
                     }
                 );
-                
+                                
                 var taskTimes = {
-                    "todo" : countEm($('td.todo pre.title_inner')),
-                    "inProgress" : countEm($('td.inprogress pre.title_inner')),
-                    "verify" : countEm($('td.verify pre.title_inner')),
-                    "done" : countEm($('td.done pre.title_inner'))
+                    "totalTodo" : totalTodo,
+                    "totalInProgress" : totalInProgress,
+                    "totalVerify" : totalVerify,
+                    "totalDone" : totalDone,
+                    "stories" : stories
                 };
                 port.postMessage(taskTimes);
             }
