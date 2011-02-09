@@ -1,7 +1,7 @@
 {
     "name": "Scrumy Live Stats",
     "version" : "0.1.1",
-    "description" : "Tabulates the time units found in tasks for Scrumy, a project management tool loosely based on \"Scrum\" (http://scrumy.com/about)",
+    "description" : "Tabulates the time units found in tasks for scrumy.com, a project management tool loosely based on \"Scrum\"",
     "minimum_chrome_version" : "5.0.316.0",
     "background_page": "background.html",
     "page_action" : {
