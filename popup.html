@@ -85,6 +85,33 @@ th, td {
     color:black;
 }
 
+#tape {
+    display:none;
+    width:5em;
+    min-height: 1em;
+    right:0px;
+    top:0px;
+    position:absolute;
+    font-weight:bold;
+    font-size:110%;
+    text-align:center;
+    padding:0.25em;
+    -webkit-border-radius: 6px;
+}
+
+.visible {
+    display:block;
+}
+
+.selected, #tape {
+    background-color:#4A4474;
+    color:#ECECEC;
+}
+
+.data:hover {
+    cursor:crosshair;
+}
+
 </style>
 <script>
 $(function() {
@@ -99,15 +126,15 @@ $(function() {
                     var percentComplete = Math.round((o.totalDone / totalTimeUnits)*100);
                     
                     // build out raw string for breakdown by story; screw fancy templates, i say (for now)
-                    var storiesTable = "<table><thead><tr><th>story</th><th>todo</th><th>in progress</th><th>verify</th><th>done</th></tr><tbody>";
+                    var storiesTable = "<table id='stories'><thead><tr><th>story</th><th>todo</th><th>in progress</th><th>verify</th><th>done</th></tr><tbody>";
                     for(i = 0; i < o.stories.length; i++) {
                         var story = o.stories[i];
                         storiesTable += "<tr>" +
                                             "<td>" + story.name + "</td>" +
-                                            "<td>" + story.todo + "</td>" +
-                                            "<td>" + story.inProgress + "</td>" +
-                                            "<td>" + story.verify + "</td>" +
-                                            "<td>" + story.done + "</td>" +
+                                            "<td class='data'>" + story.todo + "</td>" +
+                                            "<td class='data'>" + story.inProgress + "</td>" +
+                                            "<td class='data'>" + story.verify + "</td>" +
+                                            "<td class='data'>" + story.done + "</td>" +
                                         "</tr>";
                     }
                     storiesTable += "</tbody></table>";
@@ -118,7 +145,7 @@ $(function() {
                                 percentComplete + "% complete" +
                             "</div>" + 
                             "<div id='progress_bar_info'>" + o.totalDone + " (complete) / " + totalTimeUnits + " (total)</div>" +
-                        "</div>"  +                                                  
+                        "</div>"  +                                         
                         "<table>" +
                             "<thead>" +
                                 "<tr><th>todo</th><th>in progress</th><th>verify</th><th>done</th></tr>" +
@@ -132,9 +159,11 @@ $(function() {
                                 "</tr>" +
                             "</tbody>" +
                         "</table>" +
-                        
-                        "<h2>Breakdown by Story</h2>" +
-                        storiesTable                        
+                        "<div style='position:relative;'>" +
+                            "<h2>Breakdown by Story</h2>" +                        
+                            "<div id='tape'></div>" +
+                            storiesTable +
+                        "</div>"           
                     );
                     
                     $('#progress_bar_total').unbind();
@@ -145,6 +174,34 @@ $(function() {
                         },
                         function() {
                             $('#progress_bar_info').css('display', 'none');
+                        }
+                    );
+                    
+                    var customSum = 0;
+                    $('table#stories td.data').click(
+                            function() {
+                                var v = parseFloat($(this).text());
+                                
+                                $('#tape').css('display', 'block');                                
+                                
+                                if($(this).hasClass('selected')) {
+                                    customSum -= v;
+                                    $('#tape').text(customSum);
+                                    $(this).removeClass('selected');                                    
+                                } else {
+                                    customSum += v;
+                                    $('#tape').text(customSum);
+                                    $(this).addClass('selected');
+                                }
+
+                            }
+                        );
+                    
+                    $('#tape').click(
+                        function() {
+                            $(this).text('');
+                            $(this).css('display', 'none');
+                            $('table#stories td.data').removeClass('selected');
                         }
                     );
                 }
