@@ -192,6 +192,7 @@ $(function() {
                                     $(this).removeClass('selected'); 
                                     if( 0 == $('table#stories').find('td.selected').length ) {
                                         $('#tape').removeClass('visible');
+                                        customSum = 0;
                                     }                                 
                                 } else {                                    
                                     customSum += v;
@@ -210,6 +211,7 @@ $(function() {
                             $(this).text('');
                             $(this).removeClass('visible');
                             $('table#stories td.data').removeClass('selected');
+                            customSum = 0;
                         }
                     );
                 }
