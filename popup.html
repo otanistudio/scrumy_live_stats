@@ -99,13 +99,17 @@ th, td {
     -webkit-border-radius: 6px;
 }
 
-.visible {
+div#tape.visible {
     display:block;
 }
 
 .selected, #tape {
     background-color:#4A4474;
     color:#ECECEC;
+}
+
+#tape:hover {
+    cursor:default;
 }
 
 .data:hover {
@@ -182,16 +186,20 @@ $(function() {
                             function() {
                                 var v = parseFloat($(this).text());
                                 
-                                $('#tape').css('display', 'block');                                
-                                
                                 if($(this).hasClass('selected')) {
                                     customSum -= v;
                                     $('#tape').text(customSum);
-                                    $(this).removeClass('selected');                                    
-                                } else {
+                                    $(this).removeClass('selected'); 
+                                    if( 0 == $('table#stories').find('td.selected').length ) {
+                                        $('#tape').removeClass('visible');
+                                    }                                 
+                                } else {                                    
                                     customSum += v;
                                     $('#tape').text(customSum);
                                     $(this).addClass('selected');
+                                    if( ! $('#tape').hasClass('visible')) {
+                                        $('#tape').addClass('visible');
+                                    }
                                 }
 
                             }
@@ -200,7 +208,7 @@ $(function() {
                     $('#tape').click(
                         function() {
                             $(this).text('');
-                            $(this).css('display', 'none');
+                            $(this).removeClass('visible');
                             $('table#stories td.data').removeClass('selected');
                         }
                     );
