@@ -89,7 +89,7 @@ th, td {
     display:none;
     width:5em;
     min-height: 1.3em;
-    right:0px;
+    right:5px;
     top:0px;
     position:absolute;
     font-weight:bold;
@@ -111,6 +111,12 @@ div#tape.visible {
 
 #tape:hover {
     cursor:default;
+}
+
+#tape img {
+    position:absolute;
+    right:-5px;
+    top:-5px;
 }
 
 .data:hover {
@@ -166,7 +172,7 @@ $(function() {
                         "</table>" +
                         "<div style='position:relative;'>" +
                             "<h2>Breakdown by Story</h2>" +                        
-                            "<div id='tape'></div>" +
+                            "<div id='tape'><div id='tape_inner'></div><img src='img/btn_close.png' /></div>" +
                             storiesTable +
                         "</div>"           
                     );
@@ -189,7 +195,7 @@ $(function() {
                                 
                                 if($(this).hasClass('selected')) {
                                     customSum -= v;
-                                    $('#tape').text(customSum);
+                                    $('#tape_inner').text(customSum);
                                     $(this).removeClass('selected'); 
                                     if( 0 == $('table#stories').find('td.selected').length ) {
                                         $('#tape').removeClass('visible');
@@ -197,7 +203,7 @@ $(function() {
                                     }                                 
                                 } else {                                    
                                     customSum += v;
-                                    $('#tape').text(customSum);
+                                    $('#tape_inner').text(customSum);
                                     $(this).addClass('selected');
                                     if( ! $('#tape').hasClass('visible')) {
                                         $('#tape').addClass('visible');
@@ -209,7 +215,7 @@ $(function() {
                     
                     $('#tape').click(
                         function() {
-                            $(this).text('');
+                            $('#tape_inner').text('');
                             $(this).removeClass('visible');
                             $('table#stories td.data').removeClass('selected');
                             customSum = 0;
