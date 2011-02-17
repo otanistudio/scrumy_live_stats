@@ -1,8 +1,8 @@
 var countEm = function(tasks) {
     var pattern = /\((-?\d+)\)/;    
-    var timeUnits = 0;
-    for (var i = 0; i < tasks.length; i++) {
-        var timeExtract = pattern.exec( $(tasks[i]).text() ) || [null, 3];
+    var timeUnits = 0, numTasks = tasks.length;
+    while (numTasks--) {
+        var timeExtract = pattern.exec( $(tasks[numTasks]).text() ) || [null, 3];
         if(null !== timeExtract && 'NaN' != timeExtract[1] && timeExtract.length == 2) {
             timeUnits += parseFloat(timeExtract[1]);            
         }
