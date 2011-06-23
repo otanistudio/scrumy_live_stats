@@ -1,5 +1,5 @@
 var countEm = function(tasks) {
-    var pattern = /\((-?\d+\.?\d+?)\)/;    
+    var pattern = /\((-?\d*\.?\d+?)\)/;    
     var timeUnits = 0;
     var numTasks = tasks.length;
     while (numTasks--) {
@@ -27,10 +27,11 @@ chrome.extension.onConnect.addListener(
                     function() {
                         var row = $(this);
                         var storyName = $.trim(row.find('td.stories div.story div.story-handle span.title').text());
-                        var storyTodoCount = countEm(row.find('td.todo > div.task'));
-                        var storyInProgressCount = countEm(row.find('td.inprogress > div.task'));
-                        var storyVerifyCount = countEm(row.find('td.verify > div.task'));
-                        var storyDoneCount = countEm(row.find('td.done > div.task'));
+                        var storyTodoCount = countEm(row.find('td.todo > div.task pre.title_inner'));
+                        var storyInProgressCount = countEm(row.find('td.inprogress > div.task pre.title_inner'));
+                        var storyVerifyCount = countEm(row.find('td.verify > div.task pre.title_inner'));
+                        var storyDoneCount = countEm(row.find('td.done > div.task pre.title_inner'));
+                        
                         stories.push({
                             'name' : storyName,
                             'todo' : storyTodoCount,
